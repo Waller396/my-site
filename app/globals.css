@@ -427,3 +427,72 @@ body {
     grid-template-columns: 1fr;
   }
 }
+/* KEEP ALL FULL FILMS INSIDE THE SCREEN */
+
+.fullscreen-video {
+  width: min(90vw, 1400px);
+  height: auto;
+  max-height: 85vh;
+  object-fit: contain;
+}
+
+mux-player.fullscreen-video {
+  width: min(90vw, 1400px);
+  height: 85vh;
+  max-height: 85vh;
+  object-fit: contain;
+  --media-object-fit: contain;
+}
+
+/* MOBILE FILM TILES */
+
+@media (max-width: 640px) {
+  .site-nav {
+    padding: 16px;
+  }
+
+  .site-logo {
+    font-size: 2.5rem;
+  }
+
+  .nav-links {
+    right: 16px;
+    left: auto;
+    transform: none;
+  }
+
+  /* Make featured films match the other 16:9 tiles */
+  .hero-image {
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .hero-image .video-tile {
+    height: 100%;
+    aspect-ratio: 16 / 9;
+  }
+
+  /* Keep titles visible over still images */
+  .tile-text {
+    right: 16px;
+    bottom: 16px;
+    left: 16px;
+    opacity: 1;
+    transform: none;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9);
+  }
+
+  .tile-text h3 {
+    font-size: 1rem;
+  }
+
+  .tile-text p {
+    font-size: 0.8rem;
+    opacity: 0.9;
+  }
+
+  .media-grid,
+  .media-grid-two {
+    grid-template-columns: 1fr;
+  }
+}

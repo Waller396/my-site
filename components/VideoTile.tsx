@@ -1,14 +1,16 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import MuxPlayer from "@mux/mux-player-react";
 
 type VideoTileProps = {
   title?: string;
   subtitle?: string;
   image: string;
   hoverVideo: string;
-  filmVideo: string;
+  filmVideo?: string;
+  muxPlaybackId?: string;
 };
 
 export default function VideoTile({
@@ -17,18 +19,37 @@ export default function VideoTile({
   image,
   hoverVideo,
   filmVideo,
+  muxPlaybackId,
 }: VideoTileProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [open, setOpen] = useState(false);
+  const [canHover, setCanHover] = useState(false);
+
+  useEffect(() => {
+    const hoverQuery = window.matchMedia(
+      "(hover: hover) and (pointer: fine)"
+    );
+
+    const updateHoverSupport = () => {
+      setCanHover(hoverQuery.matches);
+    };
+
+    updateHoverSupport();
+    hoverQuery.addEventListener("change", updateHoverSupport);
+
+    return () => {
+      hoverQuery.removeEventListener("change", updateHoverSupport);
+    };
+  }, []);
 
   const handleMouseEnter = () => {
+    if (!canHover) return;
+
     const video = videoRef.current;
     if (!video) return;
 
     video.currentTime = 0;
-
     video.play().catch(() => {});
-
     video.style.opacity = "1";
   };
 
@@ -40,30 +61,49 @@ export default function VideoTile({
     video.style.opacity = "0";
   };
 
+  const openFilm = () => {
+    setOpen(true);
+  };
+
   return (
     <>
       <div
         className="video-tile"
-        onClick={() => setOpen(true)}
+        role="button"
+        tabIndex={0}
+        aria-label={`Play ${title || "film"}`}
+        onClick={openFilm}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openFilm();
+          }
+        }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
         <Image
           src={image}
-          alt={title || "thumbnail"}
+          alt={title || "Film thumbnail"}
           width={1600}
           height={900}
+          sizes="(max-width: 640px) 100vw,
+                 (max-width: 900px) 50vw,
+                 33vw"
           className="image-fill"
         />
 
-        <video
-          ref={videoRef}
-          src={hoverVideo}
-          muted
-          loop
-          playsInline
-          className="hover-video"
-        />
+        {canHover && (
+          <video
+            ref={videoRef}
+            src={hoverVideo}
+            muted
+            loop
+            playsInline
+            preload="none"
+            className="hover-video"
+          />
+        )}
 
         {(title || subtitle) && (
           <div className="tile-text">
@@ -85,17 +125,31 @@ export default function VideoTile({
           <button
             type="button"
             className="close-btn"
+            aria-label="Close film"
             onClick={() => setOpen(false)}
           >
             ✕
           </button>
 
-          <video
-            src={filmVideo}
-            autoPlay
-            controls
-            className="fullscreen-video"
-          />
+          {muxPlaybackId ? (
+            <MuxPlayer
+              playbackId={muxPlaybackId}
+              autoPlay
+              metadata={{
+                video_id: muxPlaybackId,
+                video_title: title || "Film",
+              }}
+              className="fullscreen-video"
+            />
+          ) : (
+            <video
+              src={filmVideo}
+              autoPlay
+              controls
+              playsInline
+              className="fullscreen-video"
+            />
+          )}
         </div>
       )}
     </>
