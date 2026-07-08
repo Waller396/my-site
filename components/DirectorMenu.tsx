@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+const biography =
+  "Min-jae Han developed his cinematic voice between Seoul’s independent film scene and Berlin’s experimental cinema community. After creating a series of acclaimed short films recognised at international festivals including the Berlinale, he moved into commercial filmmaking with a focus on emotion, atmosphere and visual precision. His work blends rich colour, human performances and a refined sense of composition, creating films that feel cinematic, authentic and deeply connected to the world of each brand.";
+
 const directors = [
   {
     name: "Min-jae Han",
@@ -34,7 +37,6 @@ const directors = [
     name: "Leila Rahman",
     image: "/images/evisu-16_9-thumb.jpg",
   },
-  
 ];
 
 export default function DirectorMenu() {
@@ -99,7 +101,7 @@ export default function DirectorMenu() {
           className="directors-button"
           onClick={() => setOpen(true)}
         >
-          Directors
+          Profile
         </button>
 
         <button
@@ -117,7 +119,7 @@ export default function DirectorMenu() {
           <button
             type="button"
             className="directors-close"
-            aria-label="Close directors"
+            aria-label="Close profile"
             onClick={() => setOpen(false)}
           >
             ×
@@ -125,11 +127,18 @@ export default function DirectorMenu() {
 
           <div className="directors-heading">
             <p>All In</p>
-            <h2>Directors</h2>
+            <h2>Profile</h2>
           </div>
+
+          <section className="directors-bio">
+            <h3>Biography</h3>
+            <p>{biography}</p>
+          </section>
 
           <div className="directors-content">
             <div className="directors-list">
+              <h3>Directors</h3>
+
               {directors.map((director) => (
                 <div
                   className="director-entry"
@@ -146,10 +155,7 @@ export default function DirectorMenu() {
                   />
 
                   {director.href ? (
-                    <Link
-                      href={director.href}
-                      onClick={() => setOpen(false)}
-                    >
+                    <Link href={director.href} onClick={() => setOpen(false)}>
                       {director.name}
                     </Link>
                   ) : (

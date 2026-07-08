@@ -397,6 +397,29 @@ body {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
+.bio-image-frame img,
+.bio-image-frame .image-fill {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+}
+
+@media (max-width: 1400px) {
+  .bio-section {
+    grid-template-columns: 1.5fr 1fr 1fr;
+  }
+
+  .bio-contact {
+    padding: 50px 32px;
+  }
+
+  .bio-image-frame {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
 /* -------------------------
    MOBILE
 ------------------------- */
@@ -625,6 +648,27 @@ mux-player.fullscreen-video {
 
 .director-mobile-image {
   display: none;
+}
+
+.directors-bio {
+  max-width: 980px;
+  margin: 48px 0 64px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(0, 0, 0, 0.35);
+}
+
+.directors-bio h3,
+.directors-list h3 {
+  margin: 0 0 24px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.directors-bio p {
+  margin: 0;
+  font-size: clamp(1.4rem, 2.8vw, 3rem);
+  line-height: 1.15;
 }
 
 /* DIRECTORS MENU - MOBILE */

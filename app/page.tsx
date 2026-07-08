@@ -133,6 +133,8 @@ export default function Home() {
             muxPlaybackId="f00EriRTXQ00OHjHdcRtVMenkE7InAyWTV6MrP7TX2tVI"
           />
         </section>
+
+
       </div>
 
       <DirectorMenu />
